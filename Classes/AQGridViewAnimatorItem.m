@@ -17,7 +17,7 @@
 	AQGridViewAnimatorItem * result = [[self alloc] init];
 	result.animatingView = aView;
 	result.index = anIndex;
-	return ( result );
+	return ( [result autorelease] );
 }
 
 

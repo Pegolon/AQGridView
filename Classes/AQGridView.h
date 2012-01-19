@@ -235,7 +235,7 @@ extern NSString * const AQGridViewSelectionDidChangeNotification;
 @property (nonatomic) AQGridViewCellSeparatorStyle separatorStyle;	// default is AQGridViewCellSeparatorStyleEmptySpace
 @property (nonatomic, retain) UIColor * separatorColor;		// ignored unless separatorStyle == AQGridViewCellSeparatorStyleSingleLine. Default is standard separator gray.
 
-- (AQGridViewCell *) dequeueReusableCellWithIdentifier: (NSString *) reuseIdentifier;
+- (AQGridViewCell *) newDequeueReusableCellWithIdentifier: (NSString *) reuseIdentifier;
 
 // Headers and Footers
 

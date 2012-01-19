@@ -15,8 +15,7 @@
 {
 	NSMutableIndexSet * mutable = [self mutableCopy];
 	[mutable removeIndexes: otherSet];
-	NSIndexSet * result = [mutable copy];
-	return ( result );
+	return ( [mutable autorelease] );
 }
 
 @end
