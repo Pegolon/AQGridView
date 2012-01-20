@@ -109,6 +109,7 @@
 																		   action: action
 																		animation: animation];
 		[array addObject: item];
+		[item release];
 		
 		i = [indices indexGreaterThanIndex: i];
 	}
@@ -124,6 +125,7 @@
 																	animation: animation];
 	item.newIndex = newIndex;
 	[array addObject: item];
+	[item release];
 }
 
 - (NSUInteger) numberOfUpdates
@@ -344,7 +346,8 @@
 			}
 		}
 	}
-	
+	[oldToNewIndices release];
+	[newToOldIndices release];
 }
 
 - (void) cleanupUpdateItems
@@ -435,22 +438,22 @@
 
 - (NSArray *) sortedInsertItems
 {
-	return ( [_insertItems copy] );
+	return ( _insertItems  );
 }
 
 - (NSArray *) sortedDeleteItems
 {
-	return ( [_deleteItems copy] );
+	return ( _deleteItems );
 }
 
 - (NSArray *) sortedMoveItems
 {
-	return ( [_moveItems copy] );
+	return ( _moveItems );
 }
 
 - (NSArray *) sortedReloadItems
 {
-	return ( [_reloadItems copy] );
+	return ( _reloadItems );
 }
 
 - (AQGridViewData *) newGridViewData
@@ -472,7 +475,7 @@
 	
 	UIGraphicsEndImageContext();
 	
-	return ( result );
+	return ( [result autorelease] );
 }
 
 - (UIImageView *) animateDeletionForCell: (AQGridViewCell *) cell withAnimation: (AQGridViewItemAnimation) animation
@@ -626,7 +629,8 @@
 	{
 		[cell setValue: [itemsToAnimate objectForKey: keyPath] forKey: keyPath];
 	}
-    
+    [itemsToSetBeforeAnimation release];
+	[itemsToAnimate release];
 }
 
 - (void) animateReloadForCell: (AQGridViewCell *) newCell originalCell: (AQGridViewCell *) originalCell withAnimation: (AQGridViewItemAnimation) animation
@@ -911,7 +915,10 @@
 	
 	CFRelease( animatingCellTable );
 	
-	return ( newVisibleCells );
+	[oldIndicesOfAllVisibleCells release];
+	[movingSet release];
+	
+	return ( [newVisibleCells autorelease] );
 }
 
 @end
