@@ -121,6 +121,17 @@ NSString * const AQGridViewSelectionDidChangeNotification = @"AQGridViewSelectio
 	_flags.contentSizeFillsBounds = 1;
 }
 
+- (void)dealloc
+{
+	[_gridData release];
+	[_visibleCells release];
+	[_reusableGridCells release];
+	[_highlightedIndices release];
+	[_updateInfoStack release];
+	
+	[super dealloc];
+}
+
 - (id)initWithFrame: (CGRect) frame
 {
     self = [super initWithFrame:frame];
