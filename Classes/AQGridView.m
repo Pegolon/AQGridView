@@ -121,17 +121,6 @@ NSString * const AQGridViewSelectionDidChangeNotification = @"AQGridViewSelectio
 	_flags.contentSizeFillsBounds = 1;
 }
 
-- (void)dealloc
-{
-	[_gridData release];
-	[_visibleCells release];
-	[_reusableGridCells release];
-	[_highlightedIndices release];
-	[_updateInfoStack release];
-	
-	[super dealloc];
-}
-
 - (id)initWithFrame: (CGRect) frame
 {
     self = [super initWithFrame:frame];
@@ -428,7 +417,6 @@ NSString * const AQGridViewSelectionDidChangeNotification = @"AQGridViewSelectio
 	}
 
 	self.animatingIndices = indices;
-	[indices release];
 }
 
 - (BOOL) isAnimatingUpdates
@@ -592,8 +580,6 @@ NSString * const AQGridViewSelectionDidChangeNotification = @"AQGridViewSelectio
 		return ( nil );
 
 	[cell prepareForReuse];
-
-	[cell retain];
 	
 	[cells removeObject: cell];
 	return ( cell );
@@ -608,7 +594,6 @@ NSString * const AQGridViewSelectionDidChangeNotification = @"AQGridViewSelectio
 		{
 			reuseSet = [[NSMutableSet alloc] initWithCapacity: 32];
 			[_reusableGridCells setObject: reuseSet forKey: cell.reuseIdentifier];
-			[reuseSet release];
 		}
 		else if ( [reuseSet member: cell] == cell )
 		{
@@ -892,7 +877,6 @@ NSString * const AQGridViewSelectionDidChangeNotification = @"AQGridViewSelectio
 	[_visibleCells removeObjectsInArray: newVisibleCells];
 	[_visibleCells makeObjectsPerformSelector: @selector(removeFromSuperview)];
 	[_visibleCells setArray: newVisibleCells];
-	[newVisibleCells release];
 	self.animatingCells = nil;
 
 	NSMutableSet * removals = [[NSMutableSet alloc] init];
@@ -906,7 +890,6 @@ NSString * const AQGridViewSelectionDidChangeNotification = @"AQGridViewSelectio
 	}
 
 	[removals makeObjectsPerformSelector: @selector(removeFromSuperview)];
-	[removals release];
 
 	// update the content size/offset based on the new grid data
 	CGPoint oldMaxLocation = CGPointMake(CGRectGetMaxX(self.bounds), CGRectGetMaxY(self.bounds));
@@ -919,7 +902,6 @@ NSString * const AQGridViewSelectionDidChangeNotification = @"AQGridViewSelectio
 
 	AQGridViewUpdateInfo * info = [[AQGridViewUpdateInfo alloc] initWithOldGridData: _gridData forGridView: self];
 	[_updateInfoStack addObject: info];
-	[info release];
 }
 
 - (void) endUpdateAnimations
@@ -1447,8 +1429,6 @@ passToSuper:
 		[self performSelector: @selector(_userSelectItemAtIndex:)
 				   withObject: selectorParams
 				   afterDelay:0.0];
-		[selectorParams release];
-		
 	} while (0);
 
 	if ( _pendingSelectionIndex != NSNotFound )
@@ -1505,7 +1485,6 @@ NSArray * __sortDescriptors;
     dispatch_once(&onceToken, ^{
 		NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"displayIndex" ascending: YES];
 		__sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
-		[sortDescriptor release];
     });
 
 	[_visibleCells sortUsingDescriptors: __sortDescriptors];
@@ -1581,9 +1560,6 @@ NSArray * __sortDescriptors;
                     [_visibleCells removeObjectsInArray: removedCells];
                     //NSLog( @"After removals, visible cells count = %lu", (unsigned long)[_visibleCells count] );
                     
-                    // don't need this any more
-					[shifted release];
-                    
                     // remove cells from the view hierarchy -- but only if they're not being animated by something else
                     NSArray * animating = [[self.animatingCells valueForKey: @"animatingView"] allObjects];
                     if ( animating != nil )
@@ -1594,8 +1570,6 @@ NSArray * __sortDescriptors;
                     
                     // put them into the cell reuse queue
                     [self enqueueReusableCells: removedCells];
-                    
-					[removedCells release];
                 }
                 
                 if ( [insertedIndices count] != 0 )
@@ -1644,8 +1618,7 @@ NSArray * __sortDescriptors;
                         // remove these from the set of indices for which we will generate new cells
                         [insertedIndices removeIndexes: animatingInserted];
                     }
-                    [animatingInserted release];
-                    
+                
                     // insert cells for these indices
                     idx = [insertedIndices firstIndex];
                     while ( idx != NSNotFound )
@@ -1733,9 +1706,6 @@ NSArray * __sortDescriptors;
                 
                 // layout these cells -- this will also sort the visible cell list
                 [self layoutAllCells];
-				
-				[removedIndices release];
-				[insertedIndices release];
             }
         }
         @catch (id exception)

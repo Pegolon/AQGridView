@@ -57,7 +57,6 @@
 {
 	AQGridView * aView = [[AQGridView alloc] initWithFrame: CGRectZero];
 	self.gridView = aView;
-	[aView release];
     
     [self _sharedGridViewDefaultSetup];
 }
