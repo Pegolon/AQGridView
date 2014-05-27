@@ -114,7 +114,7 @@ NSString * const AQGridViewSelectionDidChangeNotification = @"AQGridViewSelectio
 	_pendingSelectionIndex = NSNotFound;
 
 	_flags.resizesCellWidths = 0;
-	_flags.numColumns = (unsigned)[_gridData numberOfItemsPerRow];
+	_flags.numColumns = (unsigned int)[_gridData numberOfItemsPerRow];
 	_flags.separatorStyle = AQGridViewCellSeparatorStyleEmptySpace;
 	_flags.allowsSelection = 1;
 	_flags.usesPagedHorizontalScrolling = NO;
@@ -475,7 +475,7 @@ NSString * const AQGridViewSelectionDidChangeNotification = @"AQGridViewSelectio
 	BOOL wasAtBottom = ((oldGridSize.height != 0.0) && (CGRectGetMaxY(oldBounds) == oldGridSize.height));
 
 	[_gridData gridViewDidChangeBoundsSize: bounds.size];
-    _flags.numColumns = (unsigned) [_gridData numberOfItemsPerRow];
+    _flags.numColumns = (unsigned int)[_gridData numberOfItemsPerRow];
 	CGSize newGridSize = [_gridData sizeForEntireGrid];
 
 	CGPoint oldMaxLocation = CGPointMake(CGRectGetMaxX(oldBounds), CGRectGetMaxY(oldBounds));
@@ -636,7 +636,7 @@ NSString * const AQGridViewSelectionDidChangeNotification = @"AQGridViewSelectio
 	if ( _flags.dataSourceGridCellSize == 1 )
 	{
 		[_gridData setDesiredCellSize: [_dataSource portraitGridCellSizeForGridView: self]];
-		_flags.numColumns = (unsigned)[_gridData numberOfItemsPerRow];
+		_flags.numColumns = (unsigned int)[_gridData numberOfItemsPerRow];
 	}
 
 	_gridData.numberOfItems = [_dataSource numberOfItemsInGridView: self];
